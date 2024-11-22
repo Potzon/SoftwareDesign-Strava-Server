@@ -18,7 +18,7 @@ import java.util.Date;
 
 @Configuration
 public class DataInitializer {
-
+	//Si nadie cambia esto, gotzon was the only one who did it
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
