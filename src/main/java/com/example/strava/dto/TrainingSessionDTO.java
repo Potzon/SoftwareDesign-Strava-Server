@@ -6,17 +6,19 @@ import java.util.Date;
 //
 //@Entity
 public class TrainingSessionDTO {
-    private String sessionId;
+	private String token;
     private String title;
     private String sport;
     private Float distance;
     private Date startDate;
     private Float duration;
-	public String getSessionId() {
-		return sessionId;
+    
+    
+    public String getToken() {
+		return token;
 	}
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
+	public void setToken(String token) {
+		this.token = token;
 	}
 	public String getTitle() {
 		return title;
@@ -52,10 +54,10 @@ public class TrainingSessionDTO {
 		
 	}
 	
-	public TrainingSessionDTO(String sessionId, String title, String sport, Float distance, Date startDate,
+	public TrainingSessionDTO(String token, String title, String sport, Float distance, Date startDate,
 			Float duration) {
 		super();
-		this.sessionId = sessionId;
+		this.token = token;
 		this.title = title;
 		this.sport = sport;
 		this.distance = distance;

@@ -42,11 +42,9 @@ public class ChallengeController {
     @PostMapping("/users/{userId}/challenge")
     public ResponseEntity<Challenge> challenge(
     		@PathVariable("userId") String userId,
-    		@RequestBody Map<String, Challenge> data) { 
-    	String token = data.keySet().stream().findFirst().orElse(null);
-    	Challenge challengeData = data.get(token);
+    		@RequestBody ChallengeDTO dto) { 
 
-    	Challenge challenge = challengeService.challenge(userId, token, challengeData.getChallengeName(), challengeData.getStartDate(), challengeData.getEndDate(),challengeData.getTargetTime(), challengeData.getTargetDistance(), challengeData.getSport());
+    	Challenge challenge = challengeService.challenge(userId, dto.getToken(), dto.getChallengeName(), dto.getStartDate(), dto.getEndDate(), dto.getTargetTime(), dto.getTargetDistance(), dto.getSport());
     	
     	return new ResponseEntity<>(challenge, HttpStatus.CREATED);
     }

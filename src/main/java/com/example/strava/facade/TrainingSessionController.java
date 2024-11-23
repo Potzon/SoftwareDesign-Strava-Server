@@ -5,7 +5,6 @@ import com.example.strava.dto.TrainingSessionDTO;
 import com.example.strava.entity.TrainingSession;
 import com.example.strava.service.TrainingService;
 
-
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,12 +44,8 @@ public class TrainingSessionController {
     @PostMapping("/users/{userId}/session")
     public ResponseEntity<TrainingSession> session(
     		@PathVariable("userId") String userId,
-    		@RequestBody Map<String, TrainingSession> data) {
-    	
-    	String token = data.keySet().stream().findFirst().orElse(null);
-    	TrainingSession sessionData = data.get(token);
-
-    	TrainingSession session = trainingService.session(userId, token, sessionData.getTitle(), sessionData.getSport(), sessionData.getDistance(), sessionData.getStartDate(),sessionData.getDuration());
+    		@RequestBody TrainingSessionDTO dto) {
+    	TrainingSession session = trainingService.session(userId, dto.getToken(), dto.getTitle(), dto.getSport(), dto.getDistance(), dto.getStartDate(),dto.getDuration());
     	return new ResponseEntity<>(session, HttpStatus.CREATED);
     }
     
@@ -78,6 +73,5 @@ public class TrainingSessionController {
         }
         return new ResponseEntity<>(sessions, HttpStatus.OK);
     }
-
-
+   
 }

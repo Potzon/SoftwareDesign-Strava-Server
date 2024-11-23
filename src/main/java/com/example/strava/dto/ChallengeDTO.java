@@ -6,7 +6,7 @@ import java.util.Date;
 //
 //@Entity
 public class ChallengeDTO {
-    private String userId;
+    private String token;
     private String challengeId;
     private String challengeName;
     private Date startDate;
@@ -17,11 +17,11 @@ public class ChallengeDTO {
     
 
     // Getters y Setters
-	public String getUserId() {
-		return userId;
+	public String getToken() {
+		return token;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setToken(String token) {
+		this.token = token;
 	}
 	public String getChallengeId() {
 		return challengeId;
@@ -69,10 +69,10 @@ public class ChallengeDTO {
 	public ChallengeDTO() {
 	}
 	
-	public ChallengeDTO(String userId, String challengeId, String challengeName, Date startDate, Date endDate,
+	public ChallengeDTO(String token, String challengeId, String challengeName, Date startDate, Date endDate,
 			Integer targetTime, Float targetDistance, String sport) {
 		super();
-		this.userId = userId;
+		this.token = token;
 		this.challengeId = challengeId;
 		this.challengeName = challengeName;
 		this.startDate = startDate;

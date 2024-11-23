@@ -4,6 +4,7 @@ package com.example.strava.facade;
 import com.example.strava.entity.User;
 import com.example.strava.service.UserService;
 
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -36,7 +37,7 @@ public class UserController {
     		}
     	)
     @PostMapping("/user")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<User> user(@RequestBody User user) {
         User createdUser = userService.registerUser(user.getEmail(), user.getPassword(), user.getName(), user.getBirthdate(), user.getWeight(), user.getHeight(), user.getMaxHeartRate(), user.getRestHeartRate());
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
@@ -63,7 +64,7 @@ public class UserController {
     
     // Logout - POST /logout
     @Operation(
-    		summary = "Delete a User account",
+    		summary = "Logout a legged user account",
     		description = "Returns the validation of the user account deleted",
     		responses = {
     			@ApiResponse(responseCode = "200", description = "OK: User deleted successfully"),
