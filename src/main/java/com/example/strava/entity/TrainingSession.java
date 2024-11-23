@@ -5,13 +5,29 @@ import java.util.Date;
 //import jakarta.persistence.Entity;
 //
 //@Entity
+//@Table(name = "trainingSessions")
 public class TrainingSession {
+	
+	//@Id
+	//@Column(nullable = false, unique = true)
     private String sessionId;
+    
+  	//@Column(nullable = false, unique = false)
     private String title;
+    
+    //@Column(nullable = false, unique = false)
     private String sport;
+    
+    //@Column(nullable = false, unique = false)
     private Float distance;
+    
+    //@Column(nullable = false, unique = true)
+    //@Temporal(TemporalType.DATE)
     private Date startDate;
+    
+    //@Column(nullable = false, unique = false)
     private Float duration;
+    
 	public String getSessionId() {
 		return sessionId;
 	}

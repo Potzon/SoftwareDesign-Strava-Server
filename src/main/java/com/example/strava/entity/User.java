@@ -10,18 +10,39 @@ import com.example.strava.dto.TrainingSessionDTO;
 //import jakarta.persistence.Entity;
 //
 //@Entity
+//@Table(name = "users")
 public class User {
 	
+	//@Id
+	//@Column(nullable = false, unique = true)
     private String userId;
+    //@Column(nullable = false, unique = true)
     private String name;
+    //@Column(nullable = false, unique = true)
     private String email;
+    //@Column(nullable = false)
     private String password;
+    
+    //@Column(nullable = false)
+    //@Temporal(TemporalType.DATE)
     private Date birthdate;
+    
+    //@Column(nullable = true)
     private Integer weight;
+    
+    //@Column(nullable = true)
     private Integer height;
+    
+    //@Column(nullable = true)
     private Float maxHeartRate;
+    
+    //@Column(nullable = true)
     private Float restHeartRate;
+    
+    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
     private ArrayList<Challenge> acceptedChallenges;
+    
+    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
     private ArrayList<TrainingSession> trainingSessions;
     
 	public String getUserId() {

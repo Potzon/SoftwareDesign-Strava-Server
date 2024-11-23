@@ -5,14 +5,34 @@ import java.util.Date;
 //import jakarta.persistence.Entity;
 //
 //@Entity
+//@Table(name = "challenges")
 public class Challenge {
+	
+	//@Id
+	//@Column(nullable = false, unique = true)
     private String userId;
+    
+    //@Column(nullable = false, unique = true)
     private String challengeId;
+    
+    //@Column(nullable = false, unique = false)
     private String challengeName;
+    
+    //@Column(nullable = false, unique = false)
+    //@Temporal(TemporalType.DATE)
     private Date startDate;
+    
+    //@Column(nullable = false, unique = false)
+    //@Temporal(TemporalType.DATE)
     private Date endDate;
+    
+    //@Column(nullable = false, unique = false)
     private Integer targetTime;
+    
+    //@Column(nullable = false, unique = false)
     private Float targetDistance;
+    
+    //@Column(nullable = false, unique = false)
     private String sport;
     
 
