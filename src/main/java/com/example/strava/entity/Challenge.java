@@ -1,11 +1,11 @@
-package com.example.strava.dto;
+package com.example.strava.entity;
 
 import java.util.Date;
 
 //import jakarta.persistence.Entity;
 //
 //@Entity
-public class ChallengeDTO {
+public class Challenge {
     private String userId;
     private String challengeId;
     private String challengeName;
@@ -66,10 +66,10 @@ public class ChallengeDTO {
 		this.challengeName = challengeName;
 	}
 
-	public ChallengeDTO() {
+	public Challenge() {
 	}
 	
-	public ChallengeDTO(String userId, String challengeId, String challengeName, Date startDate, Date endDate,
+	public Challenge(String userId, String challengeId, String challengeName, Date startDate, Date endDate,
 			Integer targetTime, Float targetDistance, String sport) {
 		super();
 		this.userId = userId;

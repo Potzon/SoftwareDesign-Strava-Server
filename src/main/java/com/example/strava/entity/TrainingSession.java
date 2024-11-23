@@ -1,11 +1,11 @@
-package com.example.strava.dto;
+package com.example.strava.entity;
 
 import java.util.Date;
 
 //import jakarta.persistence.Entity;
 //
 //@Entity
-public class TrainingSessionDTO {
+public class TrainingSession {
     private String sessionId;
     private String title;
     private String sport;
@@ -48,11 +48,11 @@ public class TrainingSessionDTO {
 	public void setDuration(Float duration) {
 		this.duration = duration;
 	}
-	public TrainingSessionDTO() {
+	public TrainingSession() {
 		
 	}
 	
-	public TrainingSessionDTO(String sessionId, String title, String sport, Float distance, Date startDate,
+	public TrainingSession(String sessionId, String title, String sport, Float distance, Date startDate,
 			Float duration) {
 		super();
 		this.sessionId = sessionId;

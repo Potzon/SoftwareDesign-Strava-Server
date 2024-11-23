@@ -7,7 +7,11 @@ import java.util.List;
 import com.example.strava.dto.ChallengeDTO;
 import com.example.strava.dto.TrainingSessionDTO;
 
+//import jakarta.persistence.Entity;
+//
+//@Entity
 public class User {
+	
     private String userId;
     private String name;
     private String email;
@@ -17,8 +21,8 @@ public class User {
     private Integer height;
     private Float maxHeartRate;
     private Float restHeartRate;
-    private ArrayList<ChallengeDTO> acceptedChallenges;
-    private ArrayList<TrainingSessionDTO> trainingSessions;
+    private ArrayList<Challenge> acceptedChallenges;
+    private ArrayList<TrainingSession> trainingSessions;
     
 	public String getUserId() {
 		return userId;
@@ -74,27 +78,27 @@ public class User {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-	public void setAcceptedChallenges(ArrayList<ChallengeDTO> acceptedChallenges) {
+	public void setAcceptedChallenges(ArrayList<Challenge> acceptedChallenges) {
 		this.acceptedChallenges = acceptedChallenges;
 	}
-	public ArrayList<ChallengeDTO> getAcceptedChallenges() {
+	public ArrayList<Challenge> getAcceptedChallenges() {
 		return acceptedChallenges;
 	}
-	public void setChallenges(ArrayList<ChallengeDTO> acceptedChallenges) {
+	public void setChallenges(ArrayList<Challenge> acceptedChallenges) {
 		this.acceptedChallenges = acceptedChallenges;
 	}
 	
-	public void addAcceptedChallenge(ChallengeDTO challenge) {
+	public void addAcceptedChallenge(Challenge challenge) {
 		this.acceptedChallenges.add(challenge);
 	}
-	public void addSessionToUser(TrainingSessionDTO session) {
+	public void addSessionToUser(TrainingSession session) {
 		this.trainingSessions.add(session);
 	}
 	
-	public List<TrainingSessionDTO> getTrainingSessions() {
+	public List<TrainingSession> getTrainingSessions() {
 		return trainingSessions;
 	}
-	public void setTrainingSessions(ArrayList<TrainingSessionDTO> trainingSessions) {
+	public void setTrainingSessions(ArrayList<TrainingSession> trainingSessions) {
 		this.trainingSessions = trainingSessions;
 	}
 	
@@ -113,8 +117,8 @@ public class User {
 		this.height = height;
 		this.maxHeartRate = maxHeartRate;
 		this.restHeartRate = restHeartRate;
-		this.acceptedChallenges = new ArrayList<ChallengeDTO>();
-		this.trainingSessions = new ArrayList<TrainingSessionDTO>();
+		this.acceptedChallenges = new ArrayList<Challenge>();
+		this.trainingSessions = new ArrayList<TrainingSession>();
 	}
 }
 

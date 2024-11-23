@@ -1,14 +1,11 @@
 package com.example.strava.service;
 
-import com.example.strava.dto.ChallengeDTO;
+import com.example.strava.entity.Challenge;
 import com.example.strava.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import java.util.Random;
-
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -54,7 +51,7 @@ public class UserService {
     }
 
     // Método para agregar un desafío a un usuario logueado
-    public boolean addChallengeToLoggedUser(ChallengeDTO challenge, String userId,String token) {
+    public boolean addChallengeToLoggedUser(Challenge challenge, String userId,String token) {
     	User user = activeSessions.get(token);
         if (isTokenValid(userId, token)) {
             if (user.getAcceptedChallenges() == null) {

@@ -1,6 +1,6 @@
 package com.example.strava.service;
 
-import com.example.strava.dto.TrainingSessionDTO;
+import com.example.strava.entity.TrainingSession;
 import com.example.strava.entity.User;
 
 import org.springframework.stereotype.Service;
@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 @Service
 public class TrainingService {
 
-    public TrainingSessionDTO session(String userId, String token, String title, String sport, Float distance, Date startDate, Float duration) {
+    public TrainingSession session(String userId, String token, String title, String sport, Float distance, Date startDate, Float duration) {
       	if (UserService.isTokenValid(userId, token)) {
       		String sessionId = generateToken();
-      		TrainingSessionDTO session = new TrainingSessionDTO(sessionId, title, sport, distance, startDate, duration);
+      		TrainingSession session = new TrainingSession(sessionId, title, sport, distance, startDate, duration);
       		User loggeduser = UserService.activeSessions.get(token);
       	loggeduser.addSessionToUser(session);
         return session;
@@ -26,7 +26,7 @@ public class TrainingService {
      }
     }
 
-    public List<TrainingSessionDTO> sessions(String token, Date startDate, Date endDate) {
+    public List<TrainingSession> sessions(String token, Date startDate, Date endDate) {
     	User loggeduser = UserService.activeSessions.get(token);
     	
         return loggeduser.getTrainingSessions().stream()

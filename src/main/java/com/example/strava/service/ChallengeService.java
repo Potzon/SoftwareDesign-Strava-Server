@@ -1,7 +1,7 @@
 package com.example.strava.service;
 
-import com.example.strava.dto.ChallengeDTO;
-import com.example.strava.dto.TrainingSessionDTO;
+import com.example.strava.entity.Challenge;
+import com.example.strava.entity.TrainingSession;
 import com.example.strava.entity.User;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -9,18 +9,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class ChallengeService {
-    private final List<ChallengeDTO> challenges = new ArrayList<>();
+    private final List<Challenge> challenges = new ArrayList<>();
     private final Map<String, Float> challengeStatus = new HashMap<>();
     
     // Create a new challenge
-    public ChallengeDTO challenge(String userId, String token, String name, Date startDate, Date endDate,
+    public Challenge challenge(String userId, String token, String name, Date startDate, Date endDate,
                                         Integer targetTime, Float targetDistance, String sport) {
         // Default target values if empty
         if (targetTime == null) targetTime = 0;
         if (targetDistance == null) targetDistance = 0.0f;
         if(UserService.isTokenValid(userId, token)) {
         	String challengeId = generateToken();
-            ChallengeDTO challenge = new ChallengeDTO(userId, challengeId, name, startDate, endDate, targetTime, targetDistance, sport);
+            Challenge challenge = new Challenge(userId, challengeId, name, startDate, endDate, targetTime, targetDistance, sport);
             challenges.add(challenge);
             User loggedUser = UserService.activeSessions.get(token);
             loggedUser.addAcceptedChallenge(challenge);
@@ -31,7 +31,7 @@ public class ChallengeService {
     }
 
     // Download active challenges for a user
-    public List<ChallengeDTO> challenges(Date startDate, Date endDate, String sport) {
+    public List<Challenge> challenges(Date startDate, Date endDate, String sport) {
     	return challenges.stream()
     	        .filter(challenge -> 
     	            (startDate == null || (challenge.getStartDate() != null && (challenge.getStartDate().equals(startDate) || challenge.getStartDate().after(startDate)))) &&
@@ -41,7 +41,7 @@ public class ChallengeService {
     }
 
     // Get a challenge by ID
-    public ChallengeDTO getChallengeById(String challengeId) {
+    public Challenge getChallengeById(String challengeId) {
         return challenges.stream()
                 .filter(challenge -> challenge.getChallengeId().equals(challengeId))
                 .findFirst()
@@ -49,8 +49,8 @@ public class ChallengeService {
     }
 
     // Accept a challenge by challengeId
-    public ChallengeDTO challengeParticipant(String challengeId, String userId, String token) {
-        ChallengeDTO challenge = getChallengeById(challengeId);
+    public Challenge challengeParticipant(String challengeId, String userId, String token) {
+        Challenge challenge = getChallengeById(challengeId);
         User user = UserService.activeSessions.get(token);
         if (challenge == null) {
             throw new IllegalArgumentException("Challenge not found with ID: " + challengeId);
@@ -66,7 +66,7 @@ public class ChallengeService {
     }
 
     // Get accepted challenges for a user
-    public List<ChallengeDTO> getAcceptedChallenges(String userId, String token) {
+    public List<Challenge> getAcceptedChallenges(String userId, String token) {
     	User loggedUser = UserService.activeSessions.get(token);
         if (UserService.isTokenValid(userId, token)) {
         	return loggedUser != null ? loggedUser.getAcceptedChallenges() : new ArrayList<>();
@@ -80,10 +80,10 @@ public class ChallengeService {
         
         Map<String, Float> challengeStatus = new HashMap<>();
         if (UserService.isTokenValid(userId, token)) {
-        	for (ChallengeDTO challenge : user.getAcceptedChallenges()) {
+        	for (Challenge challenge : user.getAcceptedChallenges()) {
                 Float total = 0.0f;
         
-                for (TrainingSessionDTO session : user.getTrainingSessions()) {
+                for (TrainingSession session : user.getTrainingSessions()) {
 
                     if (session.getSport().equals(challenge.getSport())
                     		&& session.getStartDate().after(challenge.getStartDate())
