@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import com.example.strava.dto.ChallengeDTO;
 
 //@Repository
-//public interface ChallengeRepository extends JpaRepository<ChallengeDTO, Long>{
-//	Optional<ChallengeDTO> findByStartDate(Date startDate);
-//	Optional<ChallengeDTO> findByEndDate(Date endDate);
-//	Optional<ChallengeDTO> findBySport(String Sport);
+//public interface ChallengeRepository extends JpaRepository<Challenge, Long>{
+//	Optional<Challenge> findByStartDate(Date startDate);
+//	Optional<Challenge> findByEndDate(Date endDate);
+//	Optional<Challenge> findBySport(String Sport);
 //
 //}
