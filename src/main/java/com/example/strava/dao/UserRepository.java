@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.example.strava.entity.User;
 
-//@Repository
-//public interface UserRepository extends JpaRepository<User, Long> {
-//	 Optional<User> findByUserId(String userId);
-//	 Optional<User> findByEmail(String email);
-//}
+@Repository
+public interface UserRepository extends JpaRepository<User, String> {
+	 Optional<User> findByUserId(String userId);
+	 Optional<User> findByEmail(String email);
+}

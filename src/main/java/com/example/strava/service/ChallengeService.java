@@ -1,5 +1,7 @@
 package com.example.strava.service;
 
+import com.example.strava.dao.ChallengeRepository;
+import com.example.strava.dao.UserRepository;
 import com.example.strava.entity.Challenge;
 import com.example.strava.entity.TrainingSession;
 import com.example.strava.entity.User;
@@ -9,8 +11,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class ChallengeService {
-    private final List<Challenge> challenges = new ArrayList<>();
-    private final Map<String, Float> challengeStatus = new HashMap<>();
+
+	private final ChallengeRepository challengeRepository;
+    private final UserRepository userRepository;
+
+    public ChallengeService(ChallengeRepository challengeRepository, UserRepository userRepository) {
+        this.challengeRepository = challengeRepository;
+        this.userRepository = userRepository;
+    }
+	
     
     // Create a new challenge
     public Challenge challenge(String userId, String token, String name, Date startDate, Date endDate,
@@ -21,9 +30,15 @@ public class ChallengeService {
         if(UserService.isTokenValid(userId, token)) {
         	String challengeId = generateToken();
             Challenge challenge = new Challenge(userId, challengeId, name, startDate, endDate, targetTime, targetDistance, sport);
-            challenges.add(challenge);
-            User loggedUser = UserService.activeSessions.get(token);
-            loggedUser.addAcceptedChallenge(challenge);
+
+            Optional<User> userOpt = userRepository.findByUserId(userId);
+            User user = userOpt.get();
+            
+
+            user.addAcceptedChallenge(challenge);
+            challengeRepository.save(challenge);
+            userRepository.save(user);
+            
             return challenge;
         } else {
             return null;
@@ -32,20 +47,19 @@ public class ChallengeService {
 
     // Download active challenges for a user
     public List<Challenge> challenges(Date startDate, Date endDate, String sport) {
-    	return challenges.stream()
-    	        .filter(challenge -> 
-    	            (startDate == null || (challenge.getStartDate() != null && (challenge.getStartDate().equals(startDate) || challenge.getStartDate().after(startDate)))) &&
-    	            (endDate == null || (challenge.getStartDate() != null && (challenge.getStartDate().equals(startDate) || challenge.getStartDate().before(endDate)))) &&
-    	            (sport == null || (challenge.getSport() != null && challenge.getSport().equals(sport)))
-    	        ).collect(Collectors.toList());
-    }
+    	
+    	
+    	return challengeRepository.findAll().stream()
+                .filter(challenge ->
+                    (startDate == null || (challenge.getStartDate() != null && (challenge.getStartDate().equals(startDate) || challenge.getStartDate().after(startDate)))) &&
+                    (endDate == null || (challenge.getEndDate() != null && (challenge.getEndDate().equals(endDate) || challenge.getEndDate().before(endDate)))) &&
+                    (sport == null || (challenge.getSport() != null && challenge.getSport().equals(sport)))
+                ).collect(Collectors.toList());
+        }
 
     // Get a challenge by ID
     public Challenge getChallengeById(String challengeId) {
-        return challenges.stream()
-                .filter(challenge -> challenge.getChallengeId().equals(challengeId))
-                .findFirst()
-                .orElse(null);
+    	 return challengeRepository.findById(challengeId).orElse(null);
     }
 
     // Accept a challenge by challengeId
@@ -59,6 +73,7 @@ public class ChallengeService {
         // Agregar el estado aceptado a la lista de desafíos aceptados
         if (UserService.isTokenValid(userId, token)) {
         	user.addAcceptedChallenge(challenge);
+        	userRepository.save(user);
             return challenge;
         } else {
             return null;
@@ -67,32 +82,38 @@ public class ChallengeService {
 
     // Get accepted challenges for a user
     public List<Challenge> getAcceptedChallenges(String userId, String token) {
-    	User loggedUser = UserService.activeSessions.get(token);
-        if (UserService.isTokenValid(userId, token)) {
-        	return loggedUser != null ? loggedUser.getAcceptedChallenges() : new ArrayList<>();
-		}else {
-			return null;
-		}
-        
-    }
+    	 if (UserService.isTokenValid(userId, token)) {
+             Optional<User> userOpt = userRepository.findByUserId(userId);
+             return userOpt.map(User::getAcceptedChallenges).orElse(new ArrayList<>());
+         } else {
+             return null;
+         }
+     }
+    
     public Map<String, Float> challengeStatus(String userId, String token) {
-        User user = UserService.activeSessions.get(token);
-        
         Map<String, Float> challengeStatus = new HashMap<>();
-        if (UserService.isTokenValid(userId, token)) {
-        	for (Challenge challenge : user.getAcceptedChallenges()) {
-                Float total = 0.0f;
-        
-                for (TrainingSession session : user.getTrainingSessions()) {
 
-                    if (session.getSport().equals(challenge.getSport())
-                    		&& session.getStartDate().after(challenge.getStartDate())
-                    		&& session.getStartDate().before(challenge.getEndDate())) {
-                        total = total + session.getDistance();
+        if (UserService.isTokenValid(userId, token)) {
+            Optional<User> userOpt = userRepository.findByUserId(userId);
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+
+                for (Challenge challenge : user.getAcceptedChallenges()) {
+                    Float total = 0.0f;
+
+                    // Buscar sesiones de entrenamiento que coincidan con el desafío
+                    for (TrainingSession session : user.getTrainingSessions()) {
+                        if (session.getSport().equals(challenge.getSport()) &&
+                                session.getStartDate().after(challenge.getStartDate()) &&
+                                session.getStartDate().before(challenge.getEndDate())) {
+                            total += session.getDistance();
+                        }
                     }
+
+                    // Calcular porcentaje de avance
+                    total = total / challenge.getTargetDistance() * 100;
+                    challengeStatus.put(challenge.getChallengeName(), total);
                 }
-                total = total / challenge.getTargetDistance() * 100;
-                challengeStatus.put(challenge.getChallengeName(), total);
             }
         }
         return challengeStatus;

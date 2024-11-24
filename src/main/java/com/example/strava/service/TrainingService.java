@@ -3,23 +3,39 @@ package com.example.strava.service;
 import com.example.strava.entity.TrainingSession;
 import com.example.strava.entity.User;
 
+import com.example.strava.dao.UserRepository;
+import com.example.strava.dao.TrainingSessionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class TrainingService {
+	
+	private final TrainingSessionRepository trainingSessionRepository;
+    private final UserRepository userRepository;
+    
+    public TrainingService(TrainingSessionRepository trainingSessionRepository, UserRepository userRepository) {
+        this.trainingSessionRepository = trainingSessionRepository;
+        this.userRepository = userRepository;
+    }
 
     public TrainingSession session(String userId, String token, String title, String sport, Float distance, Date startDate, Float duration) {
       	if (UserService.isTokenValid(userId, token)) {
-      		String sessionId = generateToken();
-      		TrainingSession session = new TrainingSession(sessionId, title, sport, distance, startDate, duration);
       		User loggeduser = UserService.activeSessions.get(token);
+      		String sessionId = generateToken();
+      		TrainingSession session = new TrainingSession(sessionId, loggeduser, title, sport, distance, startDate, duration);
+      		
       	loggeduser.addSessionToUser(session);
+      	
+      	userRepository.save(loggeduser);
+      	trainingSessionRepository.save(session);
+      	
         return session;
      } else {
          return null;
@@ -27,13 +43,27 @@ public class TrainingService {
     }
 
     public List<TrainingSession> sessions(String token, Date startDate, Date endDate) {
-    	User loggeduser = UserService.activeSessions.get(token);
+    	String userId = UserService.activeSessions.get(token).getUserId();
+    	if (!UserService.isTokenValid(userId, token)) {
+            return new ArrayList<>();
+        }
     	
-        return loggeduser.getTrainingSessions().stream()
-        		.filter(session -> 
-        		(startDate == null || (session.getStartDate() != null && (session.getStartDate().equals(startDate) || session.getStartDate().after(startDate)))) &&
-	            (endDate == null || (session.getStartDate() != null && (session.getStartDate().equals(startDate) || session.getStartDate().before(endDate))))
-            ).collect(Collectors.toList());
+    	
+    		        
+    	 Optional<User> userOpt = userRepository.findByUserId(userId);
+         if (userOpt.isEmpty()) {
+             return new ArrayList<>();
+         }
+
+         User loggedUser = userOpt.get();
+
+         List<TrainingSession> sessions = trainingSessionRepository.findByStartDateBetween(
+					startDate != null ? startDate : new Date(0),
+	                endDate != null ? endDate : new Date(Long.MAX_VALUE));
+
+         return sessions.stream()
+             .filter(session -> session.getUser().equals(loggedUser))
+             .collect(Collectors.toList());
     }
     
     private static synchronized String generateToken() {

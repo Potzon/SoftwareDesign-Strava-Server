@@ -2,9 +2,6 @@ package com.example.strava.dto;
 
 import java.util.Date;
 
-//import jakarta.persistence.Entity;
-//
-//@Entity
 public class TrainingSessionDTO {
 	private String token;
     private String title;

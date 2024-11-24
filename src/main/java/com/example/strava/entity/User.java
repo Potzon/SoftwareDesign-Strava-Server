@@ -4,46 +4,44 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.example.strava.dto.ChallengeDTO;
-import com.example.strava.dto.TrainingSessionDTO;
 
-//import jakarta.persistence.Entity;
-//
-//@Entity
-//@Table(name = "users")
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
 	
-	//@Id
-	//@Column(nullable = false, unique = true)
+	@Id
+	@Column(nullable = false, unique = true)
     private String userId;
-    //@Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
-    //@Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private String password;
     
-    //@Column(nullable = false)
-    //@Temporal(TemporalType.DATE)
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date birthdate;
     
-    //@Column(nullable = true)
+    @Column(nullable = true)
     private Integer weight;
     
-    //@Column(nullable = true)
+    @Column(nullable = true)
     private Integer height;
     
-    //@Column(nullable = true)
+    @Column(nullable = true)
     private Float maxHeartRate;
     
-    //@Column(nullable = true)
+    @Column(nullable = true)
     private Float restHeartRate;
     
-    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
-    private ArrayList<Challenge> acceptedChallenges;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Challenge> acceptedChallenges;
     
-    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
-    private ArrayList<TrainingSession> trainingSessions;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<TrainingSession> trainingSessions;
     
 	public String getUserId() {
 		return userId;
@@ -102,7 +100,7 @@ public class User {
 	public void setAcceptedChallenges(ArrayList<Challenge> acceptedChallenges) {
 		this.acceptedChallenges = acceptedChallenges;
 	}
-	public ArrayList<Challenge> getAcceptedChallenges() {
+	public List<Challenge> getAcceptedChallenges() {
 		return acceptedChallenges;
 	}
 	public void setChallenges(ArrayList<Challenge> acceptedChallenges) {
@@ -121,6 +119,14 @@ public class User {
 	}
 	public void setTrainingSessions(ArrayList<TrainingSession> trainingSessions) {
 		this.trainingSessions = trainingSessions;
+	}
+	
+	public boolean checkPassword(String password) {
+        return this.password.equals(password);
+	}
+	
+	public boolean checkEmail(String email) {
+        return this.email.equals(email);
 	}
 	
     public User() {
