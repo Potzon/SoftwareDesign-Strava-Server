@@ -10,7 +10,7 @@ import com.example.strava.dto.TrainingSessionDTO;
 
 //@Repository
 //public interface TrainingSessionRepository extends JpaRepository<TrainingSession, Long>{
-//	Optional<TrainingSessionDTO> findByStartDate(Date startDate);
-//	Optional<TrainingSessionDTO> findByEndDate(Date endDate);
+//	Optional<TrainingSession> findByStartDate(Date startDate);
+//	Optional<TrainingSession> findByEndDate(Date endDate);
 //
 //}
