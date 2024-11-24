@@ -8,6 +8,7 @@ public class FacebookLoginServiceGateway implements LoginServiceGateway {
 	
 	
 	public Optional<String> externalLogin(){
+		
 		return Optional.empty();
 		
 	}

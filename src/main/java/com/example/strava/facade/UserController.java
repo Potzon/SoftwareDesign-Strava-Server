@@ -1,6 +1,7 @@
 package com.example.strava.facade;
 
 
+import com.example.strava.dto.CredentialsDTO;
 import com.example.strava.entity.User;
 import com.example.strava.service.UserService;
 
@@ -54,10 +55,8 @@ public class UserController {
     		}
     	)
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> loginData) {
-        String email = loginData.get("email");
-        String password = loginData.get("password");
-        String token = userService.login(email, password);
+    public ResponseEntity<Map<String, String>> login(@RequestBody CredentialsDTO dto) {
+        String token = userService.login(dto.getEmail(), dto.getPassword());
         String validation = (token != null) ? "Login successful" : "Login failed";
         return new ResponseEntity<>(Map.of("token", token, "validation", validation), HttpStatus.OK);
     }
