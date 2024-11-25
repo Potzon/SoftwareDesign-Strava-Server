@@ -20,6 +20,13 @@ public class CredentialsDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getExternalProvider() {
+		return externalProvider;
+	}
+
+	public void setExternalProvider(String externalProvider) {
+		this.externalProvider = externalProvider;
+	}
 	public CredentialsDTO() {
 		
 	}
@@ -30,13 +37,6 @@ public class CredentialsDTO {
 		this.password = password;
 	}
 
-	public String getExternalProvider() {
-		return externalProvider;
-	}
 
-	public void setExternalProvider(String externalProvider) {
-		this.externalProvider = externalProvider;
-	}
-	
 
 }

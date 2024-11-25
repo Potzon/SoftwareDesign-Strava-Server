@@ -56,7 +56,7 @@ public class UserController {
     	)
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody CredentialsDTO dto) {
-        String token = userService.login(dto.getEmail(), dto.getPassword());
+        String token = userService.login(dto);
         String validation = (token != null) ? "Login successful" : "Login failed";
         return new ResponseEntity<>(Map.of("token", token, "validation", validation), HttpStatus.OK);
     }

@@ -1,9 +1,10 @@
 package com.example.strava.service;
 
 import com.example.strava.dao.UserRepository;
+import com.example.strava.dto.CredentialsDTO;
 import com.example.strava.entity.Challenge;
 import com.example.strava.entity.User;
-
+import com.example.strava.external.LoginServiceGatewayFactory;
 
 import org.springframework.stereotype.Service;
 
@@ -33,12 +34,16 @@ public class UserService {
     }
 
     // Método para hacer login
-    public String login(String email, String password) {
+    public String login(CredentialsDTO dto) {
         // Validar si el email existe en el sistema y la contraseña es correcta
-    	Optional<User> user = userRepository.findByEmail(email);
+    	Optional<User> user = userRepository.findByEmail(dto.getEmail());
 
-        if (user.get().checkEmail(email) && user.get().checkPassword(password)) {
-            String token = generateToken();  
+        if (user.get().checkEmail(dto.getEmail()) && user.get().checkPassword(dto.getPassword())) {
+            Optional<String> tokenOpt = LoginServiceGatewayFactory.getLoginService(dto).externalLogin(dto); 
+            if (tokenOpt.isEmpty()) {
+                return null;
+            }
+            String token = tokenOpt.get();
             activeSessions.put(token, user.get());  
 
             return token;
