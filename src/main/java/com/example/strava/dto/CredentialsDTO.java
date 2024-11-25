@@ -3,7 +3,7 @@ package com.example.strava.dto;
 public class CredentialsDTO {
 	private String email;
 	private String password;
-
+	private String externalProvider;
 	// Getters y Setters
 	public String getEmail() {
 		return email;
@@ -28,6 +28,14 @@ public class CredentialsDTO {
 		super();
 		this.email = email;
 		this.password = password;
+	}
+
+	public String getExternalProvider() {
+		return externalProvider;
+	}
+
+	public void setExternalProvider(String externalProvider) {
+		this.externalProvider = externalProvider;
 	}
 	
 
