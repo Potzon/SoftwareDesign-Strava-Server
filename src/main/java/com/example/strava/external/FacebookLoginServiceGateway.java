@@ -11,8 +11,8 @@ import com.example.strava.dto.CredentialsDTO;
 
 
 public class FacebookLoginServiceGateway implements LoginServiceGateway {
-	private static final String HOST = "localhost"; // Server host
-    private static final int PORT = 8080;           // Server port
+	private static final String HOST = "localhost"; 
+    private static final int PORT = 8080;           
 	
 	//credentialsdto object with email str and pass str
 	public Optional<String> externalLogin(CredentialsDTO credentials){
@@ -21,14 +21,12 @@ public class FacebookLoginServiceGateway implements LoginServiceGateway {
 	             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 	             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-	            // Send email and password to server
 	            out.println(credentials.getEmail());
 	            out.println(credentials.getPassword());
 
-	            // Read server response
 	            String response = in.readLine();
 	            if (response.startsWith("SUCCESS:")) {
-	                return Optional.of(response.split(":")[1]); // Return token
+	                return Optional.of(response.split(":")[1]); 
 	            } else {
 	                System.err.println("Login failed: " + response);
 	                return Optional.empty();
