@@ -12,8 +12,6 @@ import com.example.strava.entity.Challenge;
 
 @Repository
 public interface ChallengeRepository extends JpaRepository<Challenge, String>{
-	List<Challenge> findByStartDate(Date startDate);
-	List<Challenge> findByEndDate(Date endDate);
 	Optional<Challenge> findById(String challengeId);
 	List<Challenge> findByUserId(String userId);
 	List<Challenge> findByStartDateBetween(Date startDate, Date endDate);
