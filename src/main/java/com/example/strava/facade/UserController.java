@@ -2,6 +2,7 @@ package com.example.strava.facade;
 
 
 import com.example.strava.dto.CredentialsDTO;
+import com.example.strava.dto.UserDTO;
 import com.example.strava.entity.User;
 import com.example.strava.service.UserService;
 
@@ -38,8 +39,8 @@ public class UserController {
     		}
     	)
     @PostMapping("/user")
-    public ResponseEntity<User> user(@RequestBody User user) {
-        User createdUser = userService.registerUser(user.getEmail(), user.getPassword(), user.getName(), user.getBirthdate(), user.getWeight(), user.getHeight(), user.getMaxHeartRate(), user.getRestHeartRate());
+    public ResponseEntity<User> user(@RequestBody UserDTO dto) {
+        User createdUser = userService.registerUser(dto.getEmail(), dto.getPassword(), dto.getName(), dto.getBirthdate(), dto.getWeight(), dto.getHeight(), dto.getMaxHeartRate(), dto.getRestHeartRate());
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
     
