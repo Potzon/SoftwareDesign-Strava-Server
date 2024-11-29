@@ -3,6 +3,7 @@ package com.example.strava.service;
 import com.example.strava.dao.UserRepository;
 import com.example.strava.dto.CredentialsDTO;
 import com.example.strava.entity.Challenge;
+import com.example.strava.entity.Credentials;
 import com.example.strava.entity.User;
 import com.example.strava.external.LoginServiceGatewayFactory;
 
@@ -39,7 +40,7 @@ public class UserService {
     	Optional<User> user = userRepository.findByEmail(dto.getEmail());
 
         if (user.get().checkEmail(dto.getEmail()) && user.get().checkPassword(dto.getPassword())) {
-            Optional<String> tokenOpt = LoginServiceGatewayFactory.getLoginService(dto).externalLogin(dto); 
+            Optional<String> tokenOpt = LoginServiceGatewayFactory.getLoginService(dto).externalLogin(new Credentials(dto.getEmail(), dto.getPassword())); 
             if (tokenOpt.isEmpty()) {
                 return null;
             }

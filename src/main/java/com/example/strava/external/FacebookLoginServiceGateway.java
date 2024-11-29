@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.Optional;
 
 import com.example.strava.dto.CredentialsDTO;
+import com.example.strava.entity.Credentials;
 
 
 public class FacebookLoginServiceGateway implements LoginServiceGateway {
@@ -15,7 +16,7 @@ public class FacebookLoginServiceGateway implements LoginServiceGateway {
     private static final int PORT = 8080;           
 	
 	//credentialsdto object with email str and pass str
-	public Optional<String> externalLogin(CredentialsDTO credentials){
+	public Optional<String> externalLogin(Credentials credentials){
 		
 		try (Socket socket = new Socket(HOST, PORT);
 	             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
