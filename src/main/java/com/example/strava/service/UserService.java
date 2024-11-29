@@ -84,7 +84,7 @@ public class UserService {
 			return false;
 		}
     }
-    private static synchronized String generateToken() {
+    public static synchronized String generateToken() {
         return Long.toHexString(System.currentTimeMillis());
     }
 }

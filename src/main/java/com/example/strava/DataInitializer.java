@@ -2,7 +2,12 @@ package com.example.strava;
 
 import com.example.strava.service.UserService;
 import com.example.strava.service.TrainingService;
+import com.example.strava.dao.ChallengeRepository;
+import com.example.strava.dao.TrainingSessionRepository;
+import com.example.strava.dao.UserRepository;
 import com.example.strava.entity.User;
+import com.example.strava.entity.Challenge;
+import com.example.strava.entity.TrainingSession;
 import com.example.strava.service.ChallengeService;
 
 import org.slf4j.Logger;
@@ -10,61 +15,67 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-
+//Euskadi bihotzean gaba heltzean
+import java.util.List;
 @Configuration
 public class DataInitializer {
-	//gora euskadi
-    private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+	private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
+	
     @Bean
-    CommandLineRunner initData(UserService userService, TrainingService trainingService, ChallengeService challengeService) {
-        return args -> {
-//            Date currentDate = new Date();
-//            // Crear usuarios iniciales con conversión de fecha de nacimiento
-//            try {
-//            	userService.registerUser("johndoe@example.com", "pswrd", "John Doe", dateFormat.parse("1990-01-01"), 75, 175, 190f, 60f);
-//                userService.registerUser("janesmith@example.com", "pswrd", "Jane Smith", dateFormat.parse("1992-05-15"), 65, 165, 180f, 55f);
-//                userService.registerUser("alicej@example.com", "pswrd", "Alice Johnson", dateFormat.parse("1988-08-20"), 70, 168, 185f, 58f);
-//                logger.info("Usuarios iniciales guardados!");
-//            } catch (ParseException e) {
-//                logger.error("Error al parsear fechas de nacimiento: ", e);
-//            } catch (Exception e) {
-//                logger.error("Error al registrar usuarios iniciales: ", e);
-//            }
-//            String token = null;
-//            // Crear sesiones de entrenamiento
-//            try {
-//            	token = userService.login("johndoe@example.com", "pswrd");
-//            	User jhon = UserService.activeSessions.get(token);
-//                trainingService.session(jhon.getUserId(), token, "Morning Run", "Running", 5.0f, currentDate, 2.5f);
-//                trainingService.session(jhon.getUserId(), token, "Evening Cycle", "Cycling", 20.0f, currentDate, 4f);
-//                trainingService.session(jhon.getUserId(), token, "Swimming Session", "Swimming", 1.5f, currentDate, 1f);
-//                logger.info("Sesiones de entrenamiento iniciales guardadas!");
-//            } catch (Exception e) {
-//                logger.error("Error al crear sesiones de entrenamiento: ", e);
-//            }
-//
-//            // Establecer fecha de fin para desafíos (7 días a partir de hoy)
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(currentDate);
-//            calendar.add(Calendar.DAY_OF_MONTH, 7);
-//            Date challengeEndDate = calendar.getTime();
-//
-//            
-//
-//            // Crear desafíos iniciales
-//            try {
-//            	User jhon = UserService.activeSessions.get(token);
-//                challengeService.challenge(jhon.getUserId(), token, "RunningTrip", currentDate, challengeEndDate, 60, 10.0f, "Running");
-//            } catch (Exception e) {
-//                logger.error("Error al crear desafíos: ", e);
-//            }
-        };
-    }
+    @Transactional
+    CommandLineRunner initData(UserRepository userRepository, TrainingSessionRepository trainingSessionRepository, ChallengeRepository challengeRepository) {
+		return args -> {
+			// Database is already initialized
+            if (userRepository.count() > 0) {                
+                return;
+            }			
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse("2004-09-04", formatter);
+            Date date = java.sql.Date.valueOf(localDate);
+            
+			// Create some users
+			User batman = new User(UserService.generateToken(), "Godtzon", "user1@example.com", "password123", date, null, null, null, null);
+			User spiderman = new User(UserService.generateToken(), "Currante", "user2@example.com", "password456", date, null, null, null, null);
+			User superman = new User(UserService.generateToken(), "Adama Bouro","user3@example.com", "password789", date, null, null, null, null);
+			
+			// Save users
+			userRepository.saveAll(List.of(batman, spiderman, superman));			
+			logger.info("Users saved!");
+			
+			// Create some training sessions
+			TrainingSession session1 = new TrainingSession(UserService.generateToken(), batman, "Morning Run", "Running", 5.0f, new Date(), 2.5f);
+			TrainingSession session2 = new TrainingSession(UserService.generateToken(), spiderman, "Evening Cycle", "Cycling", 20.0f, new Date(), 4f);
+			TrainingSession session3 = new TrainingSession(UserService.generateToken(), superman, "Swimming Session", "Swimming", 1.5f, new Date(), 1f);
+			
+			// Save training sessions
+			trainingSessionRepository.saveAll(List.of(session1, session2, session3));
+			logger.info("Training sessions saved!");
+			
+			
+			//Establish the dates
+			Date currentDate = new Date();
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(currentDate);
+			calendar.add(Calendar.DAY_OF_MONTH, 7);
+			Date challengeEndDate = calendar.getTime();
+          
+         	// Create some challenges
+			Challenge challege1 = new Challenge(batman.getUserId(), UserService.generateToken(), "Morning Run", currentDate, challengeEndDate, 50, 5.0f, "Running");
+			Challenge challenge2 = new Challenge(spiderman.getUserId(), UserService.generateToken(), "Evening Cycle", currentDate, challengeEndDate, 20, 4f,"Cycling");
+			Challenge challenge3 = new Challenge(superman.getUserId(), UserService.generateToken(), "Swimming Session", currentDate, challengeEndDate, 23, 1f, "Swimming");
+          
+			// Save challenges
+			challengeRepository.saveAll(List.of(challege1, challenge2, challenge3));
+			logger.info("Challenges saved!");
+		};
+	}
 }
