@@ -13,7 +13,7 @@ public class User {
 	@Id
 	@Column(nullable = false, unique = true)
     private String userId;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
     @Column(nullable = false, unique = true)
     private String email;

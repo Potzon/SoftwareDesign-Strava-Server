@@ -31,10 +31,11 @@ public class CredentialsDTO {
 		
 	}
 
-	public CredentialsDTO(String email, String password) {
+	public CredentialsDTO(String email, String password, String externalProvider) {
 		super();
 		this.email = email;
 		this.password = password;
+		this.externalProvider = externalProvider;
 	}
 
 
