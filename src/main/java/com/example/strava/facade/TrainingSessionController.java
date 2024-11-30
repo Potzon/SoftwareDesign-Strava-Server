@@ -64,9 +64,9 @@ public class TrainingSessionController {
     @GetMapping("/users/{userId}/sessions")
     public ResponseEntity<List<TrainingSession>> sessions(
     		@PathVariable("userId") String userId,
-    		@RequestBody String token,
     		@RequestParam(name = "startDate",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-    		@RequestParam(name = "endDate",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+    		@RequestParam(name = "endDate",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+    		@RequestBody String token) {
         List<TrainingSession> sessions = trainingService.sessions(token, startDate, endDate);
         if (sessions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

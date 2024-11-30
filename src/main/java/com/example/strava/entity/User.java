@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
@@ -40,6 +41,7 @@ public class User {
     private List<Challenge> acceptedChallenges;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<TrainingSession> trainingSessions;
     
 	public String getUserId() {

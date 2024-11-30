@@ -12,6 +12,5 @@ import com.example.strava.entity.TrainingSession;
 
 @Repository
 public interface TrainingSessionRepository extends JpaRepository<TrainingSession, String>{
-	 List<TrainingSession> findByStartDateBetween(Date startDate, Date endDate);
-
-}
+	  List<TrainingSession> findByUser_UserIdAndStartDateBetween(String userId, Date startDate, Date endDate);
+	}

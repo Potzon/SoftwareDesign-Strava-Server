@@ -43,23 +43,13 @@ public class DataInitializer {
             Date date = java.sql.Date.valueOf(localDate);
             
 			// Create some users
-			User batman = new User(UserService.generateToken(), "Godtzon", "user1@example.com", "password123", date, null, null, null, null);
-			User spiderman = new User(UserService.generateToken(), "Currante", "user2@example.com", "password456", date, null, null, null, null);
-			User superman = new User(UserService.generateToken(), "Adama Bouro","user3@example.com", "password789", date, null, null, null, null);
+			User batman = new User("1", "Godtzon", "user1@example.com", "password123", date, null, null, null, null);
+			User spiderman = new User("2", "Currante", "user2@example.com", "password456", date, null, null, null, null);
+			User superman = new User("3", "Adama Bouro","user3@example.com", "password789", date, null, null, null, null);
 			
 			// Save users
 			userRepository.saveAll(List.of(batman, spiderman, superman));			
 			logger.info("Users saved!");
-			
-			// Create some training sessions
-			TrainingSession session1 = new TrainingSession(UserService.generateToken(), batman, "Morning Run", "Running", 5.0f, new Date(), 2.5f);
-			TrainingSession session2 = new TrainingSession(UserService.generateToken(), spiderman, "Evening Cycle", "Cycling", 20.0f, new Date(), 4f);
-			TrainingSession session3 = new TrainingSession(UserService.generateToken(), superman, "Swimming Session", "Swimming", 1.5f, new Date(), 1f);
-			
-			// Save training sessions
-			trainingSessionRepository.saveAll(List.of(session1, session2, session3));
-			logger.info("Training sessions saved!");
-			
 			
 			//Establish the dates
 			Date currentDate = new Date();
@@ -67,11 +57,22 @@ public class DataInitializer {
 			calendar.setTime(currentDate);
 			calendar.add(Calendar.DAY_OF_MONTH, 7);
 			Date challengeEndDate = calendar.getTime();
-          
+			
+			// Create some training sessions
+			TrainingSession session1 = new TrainingSession("11", batman, "Morning Run", "Running", 5.0f, currentDate, 2.5f);
+			TrainingSession session2 = new TrainingSession("12", spiderman, "Evening Cycle", "Cycling", 20.0f, currentDate, 4f);
+			TrainingSession session3 = new TrainingSession("13", superman, "Swimming Session", "Swimming", 1.5f, currentDate, 1f);
+			
+			// Save training sessions
+			trainingSessionRepository.saveAll(List.of(session1, session2, session3));
+			logger.info("Training sessions saved!");
+			
+			
          	// Create some challenges
-			Challenge challege1 = new Challenge(batman.getUserId(), UserService.generateToken(), "Morning Run", currentDate, challengeEndDate, 50, 5.0f, "Running");
-			Challenge challenge2 = new Challenge(spiderman.getUserId(), UserService.generateToken(), "Evening Cycle", currentDate, challengeEndDate, 20, 4f,"Cycling");
-			Challenge challenge3 = new Challenge(superman.getUserId(), UserService.generateToken(), "Swimming Session", currentDate, challengeEndDate, 23, 1f, "Swimming");
+			Challenge challege1 = new Challenge(batman.getUserId(), "21", "Morning Run", currentDate, challengeEndDate, 50, 5.0f, "Running");
+			
+			Challenge challenge3 = new Challenge(superman.getUserId(), "22", "Swimming Session", currentDate, challengeEndDate, 23, 1f, "Swimming");
+			Challenge challenge2 = new Challenge(spiderman.getUserId(), "23", "Evening Cycle", currentDate, challengeEndDate, 20, 4f,"Cycling");
           
 			// Save challenges
 			challengeRepository.saveAll(List.of(challege1, challenge2, challenge3));

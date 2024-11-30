@@ -2,6 +2,8 @@ package com.example.strava.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,9 +13,10 @@ public class TrainingSession {
 	@Column(nullable = false, unique = true)
     private String sessionId;
 	
-	 @ManyToOne
-	 @JoinColumn(name = "user_id")
-	 private User user;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	@JsonBackReference
+	private User user;
 
 	@Column(nullable = false, unique = false)
     private String title;
@@ -24,7 +27,7 @@ public class TrainingSession {
     @Column(nullable = false, unique = false)
     private Float distance;
     
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = false)
     @Temporal(TemporalType.DATE)
     private Date startDate;
     

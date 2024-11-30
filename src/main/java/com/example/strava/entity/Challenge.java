@@ -36,7 +36,7 @@ public class Challenge {
     private User user;
 
     @Column(name = "user_id")
-    private String userId;  // Este es el campo String que conecta con el campo `userId` de `User`
+    private String userId;  
 
 
     // Getters y Setters

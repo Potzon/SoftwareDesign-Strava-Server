@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class ChallengeDTO {
     private String token;
-    private String challengeId;
     private String challengeName;
     private Date startDate;
     private Date endDate;
@@ -19,12 +18,6 @@ public class ChallengeDTO {
 	}
 	public void setToken(String token) {
 		this.token = token;
-	}
-	public String getChallengeId() {
-		return challengeId;
-	}
-	public void setChallengeId(String challengeId) {
-		this.challengeId = challengeId;
 	}
 	public Date getStartDate() {
 		return startDate;
@@ -66,11 +59,10 @@ public class ChallengeDTO {
 	public ChallengeDTO() {
 	}
 	
-	public ChallengeDTO(String token, String challengeId, String challengeName, Date startDate, Date endDate,
+	public ChallengeDTO(String token, String challengeName, Date startDate, Date endDate,
 			Integer targetTime, Float targetDistance, String sport) {
 		super();
 		this.token = token;
-		this.challengeId = challengeId;
 		this.challengeName = challengeName;
 		this.startDate = startDate;
 		this.endDate = endDate;

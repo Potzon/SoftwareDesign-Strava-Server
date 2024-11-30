@@ -43,27 +43,25 @@ public class TrainingService {
     }
 
     public List<TrainingSession> sessions(String token, Date startDate, Date endDate) {
-    	String userId = UserService.activeSessions.get(token).getUserId();
-    	if (!UserService.isTokenValid(userId, token)) {
+        String userId = UserService.activeSessions.get(token).getUserId();
+        if (!UserService.isTokenValid(userId, token)) {
             return new ArrayList<>();
         }
-    	
-    	
-    		        
-    	 Optional<User> userOpt = userRepository.findByUserId(userId);
-         if (userOpt.isEmpty()) {
-             return new ArrayList<>();
-         }
-
-         User loggedUser = userOpt.get();
-
-         List<TrainingSession> sessions = trainingSessionRepository.findByStartDateBetween(
-					startDate != null ? startDate : new Date(0),
-	                endDate != null ? endDate : new Date(Long.MAX_VALUE));
-
-         return sessions.stream()
-             .filter(session -> session.getUser().equals(loggedUser))
-             .collect(Collectors.toList());
+        
+        // Obtener el usuario
+        Optional<User> userOpt = userRepository.findByUserId(userId);
+        if (userOpt.isEmpty()) {
+            return new ArrayList<>();
+        }
+        User loggedUser = userOpt.get();
+        
+        // Establecer fechas por defecto si son nulas
+        Date defaultStartDate = startDate != null ? startDate : new Date(0); 
+        Date defaultEndDate = endDate != null ? endDate : new Date(Long.MAX_VALUE); 
+        
+        List<TrainingSession> sessions = trainingSessionRepository.findByUser_UserIdAndStartDateBetween(loggedUser.getUserId(), defaultStartDate, defaultEndDate);
+        
+        return sessions; 
     }
     
     private static synchronized String generateToken() {
