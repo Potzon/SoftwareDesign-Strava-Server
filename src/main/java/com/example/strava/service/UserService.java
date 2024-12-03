@@ -40,7 +40,7 @@ public class UserService {
     	Optional<User> user = userRepository.findByEmail(dto.getEmail());
 
         if (user.get().checkEmail(dto.getEmail()) && user.get().checkPassword(dto.getPassword())) {
-            Optional<String> tokenOpt = LoginServiceGatewayFactory.getLoginService(dto.getExternalProvider()).externalLogin(new Credentials(dto.getEmail(), dto.getPassword())); 
+            Optional<String> tokenOpt = LoginServiceGatewayFactory.createLoginService(dto.getExternalProvider()).externalLogin(new Credentials(dto.getEmail(), dto.getPassword())); 
             if (tokenOpt.isEmpty()) {
                 return null;
             }
