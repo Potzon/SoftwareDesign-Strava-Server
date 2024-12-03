@@ -1,16 +1,14 @@
 package com.example.strava.external;
 
-import com.example.strava.dto.CredentialsDTO;
-
 public class LoginServiceGatewayFactory {
-	public static LoginServiceGateway getLoginService(CredentialsDTO credentials) {
-        switch (credentials.getExternalProvider().toLowerCase()) {
+	public static LoginServiceGateway getLoginService(String externalProvider) {
+        switch (externalProvider.toLowerCase()) {
             case "google":
                 return new GoogleLoginServiceGateway();
             case "facebook":
                 return new FacebookLoginServiceGateway();
             default:
-                throw new IllegalArgumentException("Unknown provider: " + credentials.getExternalProvider());
+                throw new IllegalArgumentException("Unknown provider: " + externalProvider);
         }
     }
 }
