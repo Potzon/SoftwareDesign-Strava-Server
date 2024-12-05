@@ -1,7 +1,7 @@
 package com.example.strava.external;
 
 public class LoginServiceGatewayFactory {
-	public static LoginServiceGateway createLoginService(String externalProvider) {
+	public static ILoginServiceGateway createLoginService(String externalProvider) {
         switch (externalProvider.toLowerCase()) {
             case "google":
                 return new GoogleLoginServiceGateway();

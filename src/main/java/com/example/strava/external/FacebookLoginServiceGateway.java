@@ -11,7 +11,7 @@ import com.example.strava.dto.CredentialsDTO;
 import com.example.strava.entity.Credentials;
 
 
-public class FacebookLoginServiceGateway implements LoginServiceGateway {
+public class FacebookLoginServiceGateway implements ILoginServiceGateway {
 	private static final String HOST = "localhost"; 
     private static final int PORT = 8080;           
 	

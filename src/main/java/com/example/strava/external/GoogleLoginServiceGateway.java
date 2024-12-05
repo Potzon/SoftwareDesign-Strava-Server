@@ -1,6 +1,5 @@
 package com.example.strava.external;
 
-import com.example.strava.dto.CredentialsDTO;
 import com.example.strava.entity.Credentials;
 
 import org.springframework.http.*;
@@ -10,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 @Component
-public class GoogleLoginServiceGateway implements LoginServiceGateway{
+public class GoogleLoginServiceGateway implements ILoginServiceGateway{
 
     private static final String HOST = "http://localhost:8900/login";  
     private final RestTemplate restTemplate;
