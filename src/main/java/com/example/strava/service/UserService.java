@@ -16,7 +16,6 @@ import java.util.*;
 public class UserService {
 	final private UserRepository userRepository;
 	
-    public final static Map<String, User> users = new HashMap<>();
     public final static Map<String, User> activeSessions = new HashMap<>();
     
 	public UserService(UserRepository userRepository) {
