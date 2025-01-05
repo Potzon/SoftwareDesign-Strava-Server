@@ -63,7 +63,7 @@ public class ChallengeController {
     @GetMapping("/challenges")
     public ResponseEntity<List<Challenge>> challenges(
     		@RequestParam(name = "startDate",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-    		@RequestParam(name = "startDate",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+    		@RequestParam(name = "endDate",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
     		@RequestParam(name = "sport",required = false) String sport) {
         List<Challenge> challenges = challengeService.challenges(startDate, endDate, sport);
         return new ResponseEntity<>(challenges, HttpStatus.OK);
