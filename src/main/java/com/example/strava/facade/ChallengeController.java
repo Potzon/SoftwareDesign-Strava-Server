@@ -102,10 +102,10 @@ public class ChallengeController {
     		}
     	)
     @GetMapping("/users/{userId}/challenges/status")
-    public ResponseEntity<Map<String, Float>> challengeStatus(
+    public ResponseEntity<Map<String, Integer>> challengeStatus(
     		@PathVariable("userId") String userId,
     		@RequestBody String token) {
-        Map<String, Float> status = challengeService.challengeStatus(userId, token);
+        Map<String, Integer> status = challengeService.challengeStatus(userId, token);
         return new ResponseEntity<>(status, HttpStatus.OK);
     }
     

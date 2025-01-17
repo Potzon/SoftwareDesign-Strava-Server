@@ -1,6 +1,8 @@
 package com.example.strava.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -37,6 +39,10 @@ public class Challenge {
 
     @Column(name = "user_id")
     private String userId;  
+    
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<UserChallenge> userChallenges = new ArrayList<>();
+
 
 
     // Getters y Setters

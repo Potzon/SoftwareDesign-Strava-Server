@@ -1,10 +1,13 @@
 package com.example.strava.service;
 
 import com.example.strava.dao.ChallengeRepository;
+import com.example.strava.dao.UserChallengeRepository;
 import com.example.strava.dao.UserRepository;
 import com.example.strava.entity.Challenge;
 import com.example.strava.entity.TrainingSession;
 import com.example.strava.entity.User;
+import com.example.strava.entity.UserChallenge;
+
 import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,10 +17,12 @@ public class ChallengeService {
 
 	private final ChallengeRepository challengeRepository;
     private final UserRepository userRepository;
+    private final UserChallengeRepository userchallengeRepository;
 
-    public ChallengeService(ChallengeRepository challengeRepository, UserRepository userRepository) {
+    public ChallengeService(ChallengeRepository challengeRepository, UserRepository userRepository, UserChallengeRepository userchallengeRepository) {
         this.challengeRepository = challengeRepository;
         this.userRepository = userRepository;
+        this.userchallengeRepository = userchallengeRepository;
     }
 	
     
@@ -34,11 +39,12 @@ public class ChallengeService {
             Optional<User> userOpt = userRepository.findByUserId(userId);
             User user = userOpt.get();
             
-
-            user.addAcceptedChallenge(challenge);
+            UserChallenge userChallenge = new UserChallenge(user, challenge, 0);
+            user.addAcceptedChallenge(userChallenge);
+            
             challengeRepository.save(challenge);
             userRepository.save(user);
-            
+            userchallengeRepository.save(userChallenge);
             return challenge;
         } else {
             return null;
@@ -72,8 +78,12 @@ public class ChallengeService {
 
         // Agregar el estado aceptado a la lista de desafíos aceptados
         if (UserService.isTokenValid(userId, token)) {
-        	user.addAcceptedChallenge(challenge);
+        	
+        	UserChallenge userChallenge = new UserChallenge(user, challenge, 0);
+        	user.addAcceptedChallenge(userChallenge);
+        	
         	userRepository.save(user);
+        	userchallengeRepository.save(userChallenge);
             return challenge;
         } else {
             return null;
@@ -84,39 +94,27 @@ public class ChallengeService {
     public List<Challenge> getAcceptedChallenges(String userId, String token) {
     	 if (UserService.isTokenValid(userId, token)) {
              Optional<User> userOpt = userRepository.findByUserId(userId);
-             return userOpt.map(User::getAcceptedChallenges).orElse(new ArrayList<>());
+             return userOpt.map(User::getChallenges).orElse(new ArrayList<>());
          } else {
              return null;
          }
      }
     
-    public Map<String, Float> challengeStatus(String userId, String token) {
-        Map<String, Float> challengeStatus = new HashMap<>();
+    public Map<String, Integer> challengeStatus(String userId, String token) {
+        Map<String, Integer> challengeStatus = new HashMap<>();
 
         if (UserService.isTokenValid(userId, token)) {
             Optional<User> userOpt = userRepository.findByUserId(userId);
             if (userOpt.isPresent()) {
                 User user = userOpt.get();
-
-                for (Challenge challenge : user.getAcceptedChallenges()) {
-                    Float total = 0.0f;
-
-                    // Buscar sesiones de entrenamiento que coincidan con el desafío
-                    for (TrainingSession session : user.getTrainingSessions()) {
-                        if (session.getSport().equals(challenge.getSport()) &&
-                                session.getStartDate().after(challenge.getStartDate()) &&
-                                session.getStartDate().before(challenge.getEndDate())) {
-                            total += session.getDistance();
-                        }
+                
+                for (UserChallenge userChallenge : user.getUserChallenges()) {
+                    challengeStatus.put(userChallenge.getChallenge().getChallengeName(), userChallenge.getProgress());
                     }
-
-                    // Calcular porcentaje de avance
-                    total = total / challenge.getTargetDistance() * 100;
-                    challengeStatus.put(challenge.getChallengeName(), total);
                 }
-            }
-        }
         return challengeStatus;
+        }
+        return null;
     }
     
     private static synchronized String generateToken() {

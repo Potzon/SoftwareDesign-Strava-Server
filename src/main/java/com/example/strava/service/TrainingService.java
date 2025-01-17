@@ -43,6 +43,7 @@ public class TrainingService {
     }
 
     public List<TrainingSession> sessions(String token, Date startDate, Date endDate) {
+    	System.err.println("Token: "+ token + " UserId: "+ UserService.activeSessions.get(token).getUserId());
         String userId = UserService.activeSessions.get(token).getUserId();
         if (!UserService.isTokenValid(userId, token)) {
             return new ArrayList<>();

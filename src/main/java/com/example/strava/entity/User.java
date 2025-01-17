@@ -37,8 +37,9 @@ public class User {
     @Column(nullable = true)
     private Float restHeartRate;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Challenge> acceptedChallenges;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<UserChallenge> acceptedChallenges = new ArrayList<>();
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
@@ -98,17 +99,17 @@ public class User {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-	public void setAcceptedChallenges(ArrayList<Challenge> acceptedChallenges) {
+	public void setAcceptedChallenges(ArrayList<UserChallenge> acceptedChallenges) {
 		this.acceptedChallenges = acceptedChallenges;
 	}
-	public List<Challenge> getAcceptedChallenges() {
+	public List<UserChallenge> getAcceptedChallenges() {
 		return acceptedChallenges;
 	}
-	public void setChallenges(ArrayList<Challenge> acceptedChallenges) {
+	public void setChallenges(ArrayList<UserChallenge> acceptedChallenges) {
 		this.acceptedChallenges = acceptedChallenges;
 	}
 	
-	public void addAcceptedChallenge(Challenge challenge) {
+	public void addAcceptedChallenge(UserChallenge challenge) {
 		this.acceptedChallenges.add(challenge);
 	}
 	public void addSessionToUser(TrainingSession session) {
@@ -145,8 +146,19 @@ public class User {
 		this.height = height;
 		this.maxHeartRate = maxHeartRate;
 		this.restHeartRate = restHeartRate;
-		this.acceptedChallenges = new ArrayList<Challenge>();
+		this.acceptedChallenges = new ArrayList<UserChallenge>();
 		this.trainingSessions = new ArrayList<TrainingSession>();
+	}
+	public ArrayList<Challenge> getChallenges() {
+		ArrayList<Challenge> challenges = new ArrayList<>();
+	    
+	    for (UserChallenge userChallenge : this.acceptedChallenges) {
+	        challenges.add(userChallenge.getChallenge());
+	    }
+	    return challenges;
+	}
+	public List<UserChallenge> getUserChallenges(){
+		return this.acceptedChallenges;
 	}
 }
 

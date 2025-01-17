@@ -1,10 +1,12 @@
 package com.example.strava.service;
 
+import com.example.strava.dao.UserChallengeRepository;
 import com.example.strava.dao.UserRepository;
 import com.example.strava.dto.CredentialsDTO;
 import com.example.strava.entity.Challenge;
 import com.example.strava.entity.Credentials;
 import com.example.strava.entity.User;
+import com.example.strava.entity.UserChallenge;
 import com.example.strava.external.LoginServiceGatewayFactory;
 
 import org.springframework.stereotype.Service;
@@ -15,11 +17,13 @@ import java.util.*;
 @Service
 public class UserService {
 	final private UserRepository userRepository;
+	final private UserChallengeRepository userChallengeRepository;
 	
     public final static Map<String, User> activeSessions = new HashMap<>();
     
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, UserChallengeRepository userChallengeRepository) {
 		this.userRepository = userRepository;
+		this.userChallengeRepository = userChallengeRepository;
 	}
     
     
@@ -45,7 +49,10 @@ public class UserService {
             }
             String token = tokenOpt.get();
             activeSessions.put(token, user.get());  
-
+			for (String i : activeSessions.keySet()) {
+				System.out.println("Token "+ i + " User "+ activeSessions.get(i).getUserId());
+				
+			}
             return token;
         } else {
             return null;
@@ -68,8 +75,10 @@ public class UserService {
             if (user.getAcceptedChallenges() == null) {
                 user.setChallenges(new ArrayList<>()); // Si no tiene desafíos, los inicializamos
             }
-            user.addAcceptedChallenge(challenge); // Añadimos el desafío al usuario logueado
+            UserChallenge userChallenge = new UserChallenge(user, challenge, 0);
+            user.addAcceptedChallenge(userChallenge); 
             userRepository.save(user);
+            userChallengeRepository.save(userChallenge);
             return true;
         }
         return false; // Si no hay usuario logueado

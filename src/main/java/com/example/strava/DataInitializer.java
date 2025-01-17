@@ -4,8 +4,10 @@ import com.example.strava.service.UserService;
 import com.example.strava.service.TrainingService;
 import com.example.strava.dao.ChallengeRepository;
 import com.example.strava.dao.TrainingSessionRepository;
+import com.example.strava.dao.UserChallengeRepository;
 import com.example.strava.dao.UserRepository;
 import com.example.strava.entity.User;
+import com.example.strava.entity.UserChallenge;
 import com.example.strava.entity.Challenge;
 import com.example.strava.entity.TrainingSession;
 import com.example.strava.service.ChallengeService;
@@ -23,7 +25,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-//Euskadi bihotzean gaba heltzean
+//Euskara bihotzean gaba heltzean
 import java.util.List;
 @Configuration
 public class DataInitializer {
@@ -32,7 +34,8 @@ public class DataInitializer {
 	
     @Bean
     @Transactional
-    CommandLineRunner initData(UserRepository userRepository, TrainingSessionRepository trainingSessionRepository, ChallengeRepository challengeRepository) {
+    CommandLineRunner initData(UserRepository userRepository, TrainingSessionRepository trainingSessionRepository, 
+    		ChallengeRepository challengeRepository, UserChallengeRepository userChallengeRepository) {
 		return args -> {
 			// Database is already initialized
             if (userRepository.count() > 0) {                
@@ -69,14 +72,23 @@ public class DataInitializer {
 			
 			
          	// Create some challenges
-			Challenge challege1 = new Challenge(batman.getUserId(), "21", "Morning Run", currentDate, challengeEndDate, 50, 5.0f, "Running");
+			Challenge challenge1 = new Challenge(batman.getUserId(), "21", "Morning Run", currentDate, challengeEndDate, 50, 5.0f, "Running");
 			
 			Challenge challenge3 = new Challenge(superman.getUserId(), "22", "Swimming Session", currentDate, challengeEndDate, 23, 1f, "Swimming");
 			Challenge challenge2 = new Challenge(spiderman.getUserId(), "23", "Evening Cycle", currentDate, challengeEndDate, 20, 4f,"Cycling");
           
 			// Save challenges
-			challengeRepository.saveAll(List.of(challege1, challenge2, challenge3));
+			challengeRepository.saveAll(List.of(challenge1, challenge2, challenge3));
 			logger.info("Challenges saved!");
+			
+			//Create some progresses 
+			UserChallenge userChallenge1 = new UserChallenge(batman, challenge1, 19);
+			userChallengeRepository.save(userChallenge1);
+			UserChallenge userChallenge2 = new UserChallenge(spiderman, challenge2, 23);
+			userChallengeRepository.save(userChallenge2);
+			UserChallenge userChallenge3 = new UserChallenge(superman, challenge3, 0);
+			userChallengeRepository.save(userChallenge3);
+			logger.info("Progress saved!");
 		};
 	}
 }
