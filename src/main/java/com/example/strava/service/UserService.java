@@ -31,10 +31,9 @@ public class UserService {
     public User registerUser(String email, String password, String name, Date birthdate, Integer weight, Integer height,
                                 Float maxHeartRate, Float restHeartRate) {
         String userId = generateToken();
-        // Crear un nuevo usuario con la lista de desafíos (vacía al inicio)
         User newUser = new User(userId, name, email, password, birthdate, weight, height, maxHeartRate, restHeartRate);
-        
-        return userRepository.save(newUser); 
+        userRepository.save(newUser);
+        return newUser; 
     }
 
     // Método para hacer login

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -38,12 +40,16 @@ public class User {
     private Float restHeartRate;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
     private List<UserChallenge> acceptedChallenges = new ArrayList<>();
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
     private List<TrainingSession> trainingSessions;
+    
+    
+    
+    
+    
+    //Getters setters
     
 	public String getUserId() {
 		return userId;
@@ -149,6 +155,8 @@ public class User {
 		this.acceptedChallenges = new ArrayList<UserChallenge>();
 		this.trainingSessions = new ArrayList<TrainingSession>();
 	}
+	
+	@JsonIgnore
 	public ArrayList<Challenge> getChallenges() {
 		ArrayList<Challenge> challenges = new ArrayList<>();
 	    
@@ -157,6 +165,7 @@ public class User {
 	    }
 	    return challenges;
 	}
+	@JsonIgnore
 	public List<UserChallenge> getUserChallenges(){
 		return this.acceptedChallenges;
 	}

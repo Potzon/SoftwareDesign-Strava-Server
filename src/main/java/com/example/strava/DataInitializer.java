@@ -89,6 +89,7 @@ public class DataInitializer {
 			UserChallenge userChallenge3 = new UserChallenge(superman, challenge3, 0);
 			userChallengeRepository.save(userChallenge3);
 			logger.info("Progress saved!");
+			System.out.println(batman);
 		};
 	}
 }

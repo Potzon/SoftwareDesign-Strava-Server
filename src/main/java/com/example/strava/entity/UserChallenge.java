@@ -1,6 +1,8 @@
 package com.example.strava.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 @Entity
 @Table(name = "user_challenge", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "challenge_id"}))
@@ -12,6 +14,7 @@ public class UserChallenge {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    @JsonBackReference
     private User user;
 
     @ManyToOne

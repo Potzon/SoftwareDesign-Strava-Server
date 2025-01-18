@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.example.strava.entity.Challenge;
 import com.example.strava.entity.TrainingSession;
+import com.example.strava.entity.UserChallenge;
 
 
 public class UserDTO {
@@ -17,7 +18,7 @@ public class UserDTO {
     private Integer height;
     private Float maxHeartRate;
     private Float restHeartRate;
-    private List<Challenge> acceptedChallenges;
+    private List<UserChallenge> acceptedChallenges;
     private List<TrainingSession> trainingSessions;
     
 	public String getName() {
@@ -68,17 +69,17 @@ public class UserDTO {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-	public void setAcceptedChallenges(ArrayList<Challenge> acceptedChallenges) {
+	public void setAcceptedChallenges(ArrayList<UserChallenge> acceptedChallenges) {
 		this.acceptedChallenges = acceptedChallenges;
 	}
-	public List<Challenge> getAcceptedChallenges() {
+	public List<UserChallenge> getAcceptedChallenges() {
 		return acceptedChallenges;
 	}
-	public void setChallenges(ArrayList<Challenge> acceptedChallenges) {
+	public void setChallenges(ArrayList<UserChallenge> acceptedChallenges) {
 		this.acceptedChallenges = acceptedChallenges;
 	}
 	
-	public void addAcceptedChallenge(Challenge challenge) {
+	public void addAcceptedChallenge(UserChallenge challenge) {
 		this.acceptedChallenges.add(challenge);
 	}
 	public void addSessionToUser(TrainingSession session) {
@@ -114,7 +115,7 @@ public class UserDTO {
 		this.height = height;
 		this.maxHeartRate = maxHeartRate;
 		this.restHeartRate = restHeartRate;
-		this.acceptedChallenges = new ArrayList<Challenge>();
+		this.acceptedChallenges = new ArrayList<UserChallenge>();
 		this.trainingSessions = new ArrayList<TrainingSession>();
 	}
 }

@@ -34,7 +34,7 @@ public class UserController {
     		summary = "Register a new User account",
     		description = "Returns the details of the user account created",
     		responses = {
-    			@ApiResponse(responseCode = "200", description = "OK: USer created successfully"),
+    			@ApiResponse(responseCode = "201", description = "OK: User created successfully"),
     			@ApiResponse(responseCode = "500", description = "Internal server error")
     		}
     	)
