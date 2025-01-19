@@ -63,7 +63,7 @@ public class DataInitializer {
             Date challengeEndDate = calendar.getTime();
 
             // Training sessions
-            TrainingSession session1 = new TrainingSession("11", batman, "Morning Run", "Running", 5.0f, currentDate, 2.5f);
+            TrainingSession session1 = new TrainingSession("11", batman, "Morning Run", "Running", 1.0f, currentDate, 2.5f);
             TrainingSession session2 = new TrainingSession("12", spiderman, "Evening Cycle", "Cycling", 20.0f, currentDate, 4f);
             TrainingSession session3 = new TrainingSession("13", superman, "Swimming Session", "Swimming", 1.5f, currentDate, 1f);
             TrainingSession session4 = new TrainingSession("14", wonderWoman, "Mountain Hike", "Hiking", 10.0f, currentDate, 5f);
@@ -87,17 +87,17 @@ public class DataInitializer {
             logger.info("Challenges saved!");
 
             // Progresses
-            UserChallenge userChallenge1 = new UserChallenge(batman, challenge1, 19);
+            UserChallenge userChallenge1 = new UserChallenge(batman, challenge1, 0);
             userChallengeRepository.save(userChallenge1);
-            UserChallenge userChallenge2 = new UserChallenge(batman, challenge2, 23);
+            UserChallenge userChallenge2 = new UserChallenge(batman, challenge2, 0);
             userChallengeRepository.save(userChallenge2);
             UserChallenge userChallenge3 = new UserChallenge(superman, challenge3, 0);
             userChallengeRepository.save(userChallenge3);
-            UserChallenge userChallenge4 = new UserChallenge(wonderWoman, challenge4, 15);
+            UserChallenge userChallenge4 = new UserChallenge(wonderWoman, challenge4, 0);
             userChallengeRepository.save(userChallenge4);
-            UserChallenge userChallenge5 = new UserChallenge(flash, challenge5, 45);
+            UserChallenge userChallenge5 = new UserChallenge(flash, challenge5, 0);
             userChallengeRepository.save(userChallenge5);
-            UserChallenge userChallenge6 = new UserChallenge(aquaman, challenge6, 5);
+            UserChallenge userChallenge6 = new UserChallenge(aquaman, challenge6, 0);
             userChallengeRepository.save(userChallenge6);
 
             // Save progresses

@@ -54,7 +54,7 @@ public class ChallengeService {
     // Download active challenges for a user
     public List<Challenge> challenges(Date startDate, Date endDate, String sport) {
     	
-    	
+    	System.out.println("Sport :" + sport );
     	return challengeRepository.findAll().stream()
                 .filter(challenge ->
                     (startDate == null || (challenge.getStartDate() != null && (challenge.getStartDate().equals(startDate) || challenge.getStartDate().after(startDate)))) &&
@@ -109,7 +109,7 @@ public class ChallengeService {
                 User user = userOpt.get();
                 
                 for (UserChallenge userChallenge : user.getUserChallenges()) {
-                    challengeStatus.put(userChallenge.getChallenge().getChallengeName(), userChallenge.getProgress());
+                    challengeStatus.put(userChallenge.getChallenge().getChallengeName() + ": " + userChallenge.getChallenge().getSport() , userChallenge.getProgress());
                     }
                 }
         return challengeStatus;
