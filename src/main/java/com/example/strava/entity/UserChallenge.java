@@ -1,6 +1,8 @@
 package com.example.strava.entity;
 
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
@@ -58,6 +60,20 @@ public class UserChallenge {
         this.challenge = challenge;
     }
 
+    public void updateProgress(List<TrainingSession> trainingSessions) {
+    	double totalDistance = 0;
+    	
+    	for (TrainingSession session: user.getTrainingSessions()) {
+    		if(session.getSport().equals(this.challenge.getSport()) 
+    		&& !session.getStartDate().before(this.challenge.getStartDate()) 
+    		&& !session.getStartDate().after(this.challenge.getEndDate())) {
+    			totalDistance += session.getDistance();
+    		}
+    	}
+    double progressPercentage = (totalDistance/this.challenge.getTargetDistance())*100;
+    this.progress = (int) Math.min(progressPercentage, 100);
+    }
+    
     public Integer getProgress() {
         return progress;
     }
@@ -66,7 +82,7 @@ public class UserChallenge {
         this.progress = progress;
     }
     
-
+    
     private static synchronized String generateToken() {
         return Long.toHexString(System.currentTimeMillis());
     }

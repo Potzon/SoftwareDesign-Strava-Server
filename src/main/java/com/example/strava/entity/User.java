@@ -117,9 +117,14 @@ public class User {
 	
 	public void addAcceptedChallenge(UserChallenge challenge) {
 		this.acceptedChallenges.add(challenge);
+		challenge.updateProgress(this.trainingSessions);
 	}
 	public void addSessionToUser(TrainingSession session) {
 		this.trainingSessions.add(session);
+		
+		for(UserChallenge userChallenge : this.acceptedChallenges) {
+			userChallenge.updateProgress(this.trainingSessions);
+		}
 	}
 	
 	public List<TrainingSession> getTrainingSessions() {
